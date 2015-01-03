@@ -32,6 +32,7 @@ print( 'timeRange:', timeRange )
 dateRange = summer - winter
 print( '' )
 print( 'dateRange:', dateRange )
+print( 'dateRange:', dateRange.timedelta.days )
 
 pp.pprint( dateRange )
 
