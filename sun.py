@@ -3,13 +3,15 @@ from __future__ import print_function
 import pprint
 
 import math
+import time
 
-from datetime import datetime
+from datetime import datetime, timedelta
+
 pp = pprint.PrettyPrinter(indent=4)
 
-winterMorn = datetime.strptime('Dec 21 2014  7:51AM', '%b %d %Y %I:%M%p')
+winterMorn = datetime.strptime('Jan 01 2015  7:54AM', '%b %d %Y %I:%M%p')
 winterEven = datetime.strptime('Dec 21 2014  4:47PM', '%b %d %Y %I:%M%p')
-summerMorn = datetime.strptime('Jun 21 2015  5:40AM', '%b %d %Y %I:%M%p')
+summerMorn = datetime.strptime('Jun 14 2015  5:39AM', '%b %d %Y %I:%M%p')
 summerEven = datetime.strptime('Jun 21 2015  9:06PM', '%b %d %Y %I:%M%p')
 
 def secondsIntoDay( t ):
@@ -32,7 +34,7 @@ def getDaysDelta( date1, date2 ):
 	print( 'dateRange:', dateDelta.days )
 
 	# is this actually 1 more day...
-	daysDelta = dateDelta.days + 1 if ( dateDelta.seconds > 12 * 60 * 60 ) else 0
+	daysDelta = dateDelta.days + (1 if ( dateDelta.seconds > 12 * 60 * 60 ) else 0)
 	print( 'daysDelta', daysDelta )
 
 	return( daysDelta )
@@ -60,8 +62,15 @@ daysDelta = getDaysDelta( summerMorn, winterMorn )
 #print( 'day 091 offset', offsetForDay(  91, daysDelta, secsDelta ))
 #print( 'day 182 offset', offsetForDay( 182, daysDelta, secsDelta ))
 
+oldSecs = offsetForDay( 0, daysDelta, secsDelta)
+
 for d in range( 0, int( daysDelta ) + 1 ):
-	print( 'day(%i) offset(%i seconds) date(%s)' % ( d, 0, 1 ))
+	secs = offsetForDay( d, daysDelta, secsDelta)
+	dateAndTime = winterMorn + timedelta(days=d) - timedelta(seconds=secs)
+
+	#print( 'day(%i) offset(%i seconds) date(%s)' % ( d, secs, dateAndTime ))
+	print( '%s - %i seconds difference' % (dateAndTime.strftime( '%b %d %Y %I:%M%p'), secs - oldSecs ))
+	oldSecs = secs
 
 
 # vim: set noexpandtab ts=4 sw=4 foldmethod=marker:
